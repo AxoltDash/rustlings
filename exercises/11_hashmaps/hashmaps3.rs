@@ -31,6 +31,54 @@ fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
         // Keep in mind that goals scored by team 1 will be the number of goals
         // conceded by team 2. Similarly, goals scored by team 2 will be the
         // number of goals conceded by team 1.
+
+        /*
+        MY SOLUTION BERFORE MEET ENTRY:
+
+        if scores.contains_key(team_1_name) {
+            let ts1_old = scores.get(&team_1_name).unwrap();
+            let ts1 = TeamScores {
+                goals_scored : ts1_old.goals_scored + team_1_score,
+                goals_conceded : ts1_old.goals_conceded + team_2_score,
+            };
+            scores.insert(team_1_name,ts1);
+        } else {
+            let ts1 = TeamScores {
+                goals_scored : team_1_score,
+                goals_conceded : team_2_score,
+            };
+            scores.insert(team_1_name,ts1);
+        }
+
+        if scores.contains_key(team_2_name) {
+            let ts2_old = scores.get(&team_2_name).unwrap();
+            let ts2 = TeamScores {
+                goals_scored : ts2_old.goals_scored + team_2_score,
+                goals_conceded : ts2_old.goals_conceded + team_1_score,
+            };
+            scores.insert(team_2_name,ts2);
+        } else {
+            let ts2 = TeamScores {
+                goals_scored : team_2_score,
+                goals_conceded : team_1_score,
+            };
+            scores.insert(team_2_name,ts2);
+        }
+        */
+
+        let e1 = scores.entry(team_1_name).or_insert(TeamScores {
+            goals_scored : 0,
+            goals_conceded : 0,
+        });
+        e1.goals_scored += team_1_score;
+        e1.goals_conceded += team_2_score;
+
+        let e2 = scores.entry(team_2_name).or_insert(TeamScores {
+            goals_scored : 0,
+            goals_conceded : 0,
+        });
+        e2.goals_scored += team_2_score;
+        e2.goals_conceded += team_1_score;
     }
 
     scores
